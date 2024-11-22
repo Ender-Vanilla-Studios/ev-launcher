@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from uuid import uuid1
 
+from PIL import Image, ImageTk
 from dotenv import load_dotenv, set_key
 
 import os
@@ -79,10 +80,6 @@ evtk = Tk()
 evtk.title("EV Launcher v" + evlversion)
 evtk.iconbitmap(default="assets/ev-launcher_a.ico")
 evtk.geometry("300x400")
-
-evtk.image = PhotoImage(file="assets/a.png")
-# evl_cv = Label(image=evtk.image)
-# evl_cv.place(x=0, y=0)
 
 usernameumol = ""
 
@@ -199,16 +196,23 @@ def open_news_mc():
 
 btn = Button(text="СТАРТ", command=launch_thread, activebackground="#0a8b2e", background="green")
 btn.place(x=10, y=350)
-btn.configure(width=34, height=2)
+btn.configure(width=29, height=2)
 
 img = PhotoImage(file="assets/mc_title_.png")
+original_image = Image.open("assets/folder.png")
+resized_image = original_image.resize((80, 40))
+imgfolder = ImageTk.PhotoImage(file=resized_image)
 
 label = ttk.Label(evtk, image=img)
 label.place(x=2.5, y=30)
 
-btn = Button(text="ЛОГИ", command=open_lasted_log)
-btn.place(x=250, y=350)
-btn.configure(width=4, height=2)
+btn2 = Button(text="ЛОГИ", command=open_lasted_log)
+btn2.place(x=250, y=350)
+btn2.configure(width=4, height=2)
+
+btn3 = Button(command=open_lasted_log, image=imgfolder)
+btn3.place(x=215, y=350)
+btn3.configure(width=4, height=1)
 
 btnnews = Button(text="НОВОСТИ МАЙНКРАФТА", command=open_news_mc)
 btnnews.place(x=0, y=0)

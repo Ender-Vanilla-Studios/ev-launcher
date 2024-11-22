@@ -20,3 +20,4 @@ if not os.path.exists(env_file):
     set_key(env_file, 'evlstop', '1')
     set_key(env_file, 'custDirectory', '0')
     set_key(env_file, 'Directory', '')
+    set_key(env_file, 'lang', 'RU')

@@ -12,6 +12,7 @@ settk.title("Настройки")
 settk.geometry("400x600")
 settk.iconbitmap(default="assets/ev-launcher_a.ico")
 env_file = '.env'
+languages = ["RU", "EN-US", "UA"]
 load_dotenv()
 
 # val = IntVar(value=10)
@@ -56,6 +57,10 @@ def select_folder():
         entdir.delete(0, END)  # Очистка предыдущего значения в Entry
         entdir.insert(0, folder_path)  # Вставка нового пути
 
+lbllang = ttk.Label(text="Язык:")
+lbllang.place(x=5, y=315)
+cmbxlang = ttk.Combobox(values=languages)
+cmbxlang.place(x=40, y=315)
 
 # Поле для отображения выбранного пути
 entdir = Entry(width=22)
@@ -119,6 +124,7 @@ def save_settings():
     set_key(env_file, 'custWidth', str(entWidth.get()))
     set_key(env_file, 'custDirectory', str(enabled3.get()))
     set_key(env_file, 'Directory', str(folder_path))
+    set_key(env_file, 'lang', str(cmbxlang.get()))
 
     if os.getenv('evlicense') == '0':
         print("Вы отказались от лицензии")
