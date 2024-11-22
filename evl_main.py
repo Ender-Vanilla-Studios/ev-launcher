@@ -12,6 +12,7 @@ import webbrowser
 import minecraft_launcher_lib
 import subprocess
 import re
+import platform
 
 evlversion = "0.9.5"
 env_file = '.env'
@@ -194,14 +195,50 @@ def open_lasted_log():
 def open_news_mc():
     webbrowser.open_new(news_url)
 
+def open_folder():
+    """
+    Открывает указанную папку в файловом менеджере.
+    :param folder_name: Путь к папке для открытия.
+    """
+    # Определяем текущую операционную систему
+    system = platform.system()
+    folder_name = ".ev-game"
+
+    # Проверяем существование папки
+    if not os.path.exists(folder_name):
+        print(f"Папка '{folder_name}' не существует.")
+        return
+
+    try:
+        if system == "Windows":
+            os.startfile(folder_name)
+        elif system == "Darwin":  # macOS
+            subprocess.run(["open", folder_name])
+        elif system == "Linux":
+            subprocess.run(["xdg-open", folder_name])
+        else:
+            print("Неизвестная операционная система. Папка не может быть открыта.")
+    except Exception as e:
+        print(f"Ошибка при открытии папки: {e}")
+
 btn = Button(text="СТАРТ", command=launch_thread, activebackground="#0a8b2e", background="green")
 btn.place(x=10, y=350)
 btn.configure(width=29, height=2)
 
+# img = PhotoImage(file="assets/mc_title_.png")
+# original_image = Image.open("assets/folder.png")
+# resized_image = original_image.resize((80, 40))
+# imgfolder = ImageTk.PhotoImage(file=resized_image)
+
+# Загружаем изображение с помощью PhotoImage
 img = PhotoImage(file="assets/mc_title_.png")
+
+# Открываем и изменяем размер изображения с помощью Pillow
 original_image = Image.open("assets/folder.png")
-resized_image = original_image.resize((80, 40))
-imgfolder = ImageTk.PhotoImage(file=resized_image)
+resized_image = original_image.resize((50, 50))
+
+# Преобразуем в объект ImageTk.PhotoImage
+imgfolder = ImageTk.PhotoImage(resized_image)
 
 label = ttk.Label(evtk, image=img)
 label.place(x=2.5, y=30)
@@ -210,9 +247,9 @@ btn2 = Button(text="ЛОГИ", command=open_lasted_log)
 btn2.place(x=250, y=350)
 btn2.configure(width=4, height=2)
 
-btn3 = Button(command=open_lasted_log, image=imgfolder)
-btn3.place(x=215, y=350)
-btn3.configure(width=4, height=1)
+btn3 = Button(command=open_folder, image=imgfolder)
+btn3.place(x=223, y=350)
+btn3.configure(width=21, height=35)
 
 btnnews = Button(text="НОВОСТИ МАЙНКРАФТА", command=open_news_mc)
 btnnews.place(x=0, y=0)

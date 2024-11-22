@@ -6,7 +6,6 @@ import os
 import platform
 import sys
 
-
 settk = Tk()
 settk.title("Настройки")
 settk.geometry("400x600")
@@ -60,6 +59,7 @@ def select_folder():
 lbllang = ttk.Label(text="Язык:")
 lbllang.place(x=5, y=315)
 cmbxlang = ttk.Combobox(values=languages)
+cmbxlang.set(str(os.getenv('lang')))
 cmbxlang.place(x=40, y=315)
 
 # Поле для отображения выбранного пути
