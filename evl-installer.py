@@ -8,7 +8,7 @@ import subprocess
 from tkinter import filedialog, messagebox
 import sys
 
-url = "https://github.com/Mirik9724/ev-launcher/archive/refs/heads/main.zip"
+url = "https://github.com/Ender-Vanilla-Studios/ev-launcher/archive/refs/heads/main.zip"
 
 evlinstaller = Tk()
 evlinstaller.title("EV Launcher installer")
