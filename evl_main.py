@@ -1,10 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 from uuid import uuid1
-
 from PIL import Image, ImageTk
 from dotenv import load_dotenv, set_key
-
 import os
 import threading
 import sys
@@ -28,28 +26,15 @@ if os.getenv('evlstop')== '1':
     sys.exit()
 
 def stop():
-    evtk.destroy
+    evtk.destroy()
     sys.exit()
 
 print("Главное меню запущенно")
 def printProgressBar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', printEnd="\r"):
-    """
-    Call in a loop to create terminal progress bar
-    @params:
-        iteration   - Required  : current iteration (Int)
-        total       - Required  : total iterations (Int)
-        prefix      - Optional  : prefix string (Str)
-        suffix      - Optional  : suffix string (Str)
-        decimals    - Optional  : positive number of decimals in percent complete (Int)
-        length      - Optional  : character length of bar (Int)
-        fill        - Optional  : bar fill character (Str)
-        printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
-    """
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filledLength = int(length * iteration // total)
     bar = fill * filledLength + '-' * (length - filledLength)
     print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end=printEnd)
-    # Print New Line on Complete
     if iteration == total:
         print()
 
@@ -67,14 +52,13 @@ callback = {
 def callbackV2():
     pass
 
-
 fabric_loader_version = minecraft_launcher_lib.fabric.get_latest_loader_version()
 
 def settings_w():
-    subprocess.call(['python', 'evl_settings.py'])
+    subprocess.Popen(['python', 'evl_settings.py'])
 
 def sett_thread():
-    threadsett = threading.Thread(target=settings_w(), args=())
+    threadsett = threading.Thread(target=settings_w)
     threadsett.start()
 
 evtk = Tk()
@@ -94,18 +78,14 @@ entusername.insert(0, usernameumol)
 entusername.place(x=10, y=275)
 entusername.configure(width=46)
 
-# lbl = Label(text="Выберите версию")
-# lbl.place(x=40, y=320)
-
 versions = ["1.20.1"]
 versions_var = StringVar(value=versions[0])
 
 vcombobox = ttk.Combobox(textvariable=versions_var, values=versions)
 vcombobox.place(x=10, y=300)
 vcombobox.configure(width=43, height=2)
-# vcombobox.set(1)
 
-versionc = str(vcombobox.get())  #versions_var.get()
+versionc = str(vcombobox.get())
 minecraft_directoryc = ".ev-game"
 
 if os.getenv('custDirectory') == "0":
@@ -113,21 +93,15 @@ if os.getenv('custDirectory') == "0":
 else:
     minecraft_directoryc = str(os.getenv('Directory'))
 
-
-
 prvalue_var = IntVar(value=0)
 
 progressbar = ttk.Progressbar(orient="horizontal", variable=prvalue_var, length=280, maximum=1)
 progressbar.place(x=10, y=325)
 
-
 label = ttk.Label(textvariable=str(prvalue_var) + "%")
 label.place(x=270, y=325)
 
 def launch_game():
-    # minecraft_launcher_lib.runtime.install_jvm_runtime("17.0.8", minecraft_directoryc, None)
-    # if minecraft_launcher_lib.fabric.FabricMinecraftVersion:
-
     if os.getenv('evlicense') == '0':
         print("Вы отказались от лицензии")
         sys.exit()
@@ -151,7 +125,6 @@ def launch_game():
         ip_s = "95.216.30.27"
     else:
         ip_s = "je.ender-vanilla.ru"
-
 
     access_allowed = True
     for keyword in banned_keywords:
@@ -192,7 +165,7 @@ def launch_game():
                                                              options=options))
 
 def launch_thread():
-    threadlau = threading.Thread(target=launch_game, args=())
+    threadlau = threading.Thread(target=launch_game)
     threadlau.start()
 
 def open_lasted_log():
@@ -202,15 +175,9 @@ def open_news_mc():
     webbrowser.open_new(news_url)
 
 def open_folder():
-    """
-    Открывает указанную папку в файловом менеджере.
-    :param folder_name: Путь к папке для открытия.
-    """
-    # Определяем текущую операционную систему
     system = platform.system()
     folder_name = ".ev-game"
 
-    # Проверяем существование папки
     if not os.path.exists(folder_name):
         print(f"Папка '{folder_name}' не существует.")
         return
@@ -218,7 +185,7 @@ def open_folder():
     try:
         if system == "Windows":
             os.startfile(folder_name)
-        elif system == "Darwin":  # macOS
+        elif system == "Darwin":
             subprocess.run(["open", folder_name])
         elif system == "Linux":
             subprocess.run(["xdg-open", folder_name])
@@ -236,10 +203,6 @@ img = PhotoImage(file="assets/mc_title_.png")
 original_image = Image.open("assets/folder.png")
 resized_image = original_image.resize((35, 35), Image.Resampling.LANCZOS)
 imgfolder = ImageTk.PhotoImage(resized_image)
-
-# btn2 = Button(text="ЛОГИ", command=open_lasted_log)
-# btn2.place(x=250, y=350)
-# btn2.configure(width=4, height=2)
 
 btn3 = Button(command=open_folder, image=imgfolder)
 btn3.place(x=250, y=350)
