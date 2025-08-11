@@ -11,7 +11,7 @@ import minecraft_launcher_lib
 import subprocess
 import re
 import platform
-
+# test
 evlversion = "0.9.6_PRE2"
 env_file = '.env'
 news_url = "https://www.minecraft.net/ru-ru/articles"
