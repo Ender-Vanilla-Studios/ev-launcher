@@ -11,7 +11,7 @@ import minecraft_launcher_lib
 import subprocess
 import re
 import platform
-# test
+
 evlversion = "0.9.6_PRE2"
 env_file = '.env'
 news_url = "https://www.minecraft.net/ru-ru/articles"
@@ -22,7 +22,7 @@ if not os.getenv('evlicense') == '1':
     print("Вы отказались от лицензии")
     sys.exit()
 
-if os.getenv('evlstop')== '1':
+if os.getenv('evlstop') == '1':
     sys.exit()
 
 def stop():
@@ -30,27 +30,22 @@ def stop():
     sys.exit()
 
 print("Главное меню запущенно")
-def printProgressBar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', printEnd="\r"):
-    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
-    filledLength = int(length * iteration // total)
-    bar = fill * filledLength + '-' * (length - filledLength)
-    print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end=printEnd)
-    if iteration == total:
-        print()
 
-def maximum(max_value, value):
-    max_value[0] = value
-
-max_value = [0]
-
-callback = {
-    "setStatus": lambda text: print(text),
-    "setProgress": lambda value: printProgressBar(value, max_value[0]),
-    "setMax": lambda value: maximum(max_value, value)
-}
-
-def callbackV2():
-    pass
+class DownloadProgress:
+    def __init__(self, progressbar):
+        self.progressbar = progressbar
+        self.max_value = 0
+        
+    def set_status(self, text):
+        print(text)
+        
+    def set_progress(self, value):
+        self.progressbar['value'] = value
+        self.progressbar.update()
+        
+    def set_max(self, value):
+        self.max_value = value
+        self.progressbar['maximum'] = value
 
 fabric_loader_version = minecraft_launcher_lib.fabric.get_latest_loader_version()
 
@@ -93,20 +88,26 @@ if os.getenv('custDirectory') == "0":
 else:
     minecraft_directoryc = str(os.getenv('Directory'))
 
-prvalue_var = IntVar(value=0)
-
-progressbar = ttk.Progressbar(orient="horizontal", variable=prvalue_var, length=280, maximum=1)
+# Прогресс-бар с отступами 10 пикселей с обеих сторон
+progressbar = ttk.Progressbar(orient="horizontal", length=280, maximum=100)
 progressbar.place(x=10, y=325)
 
-label = ttk.Label(textvariable=str(prvalue_var) + "%")
-label.place(x=270, y=325)
+download_progress = DownloadProgress(progressbar)
 
 def launch_game():
     if os.getenv('evlicense') == '0':
         print("Вы отказались от лицензии")
         sys.exit()
 
-    minecraft_launcher_lib.fabric.install_fabric(str(versions_var.get()), minecraft_directory=minecraft_directoryc, callback=callback)
+    minecraft_launcher_lib.fabric.install_fabric(
+        str(versions_var.get()), 
+        minecraft_directory=minecraft_directoryc, 
+        callback={
+            "setStatus": download_progress.set_status,
+            "setProgress": download_progress.set_progress,
+            "setMax": download_progress.set_max
+        }
+    )
     print("Файлы успешно установлены")
     acesstoken = os.getenv('accestoken')
     custRel = os.getenv('custRel')
