@@ -1,2 +1,0 @@
-$ pip3 install library_name
-$ pip3 install -U library_name
