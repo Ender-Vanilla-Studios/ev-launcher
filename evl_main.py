@@ -12,7 +12,7 @@ import subprocess
 import re
 import platform
 
-evlversion = "0.9.6_PRE"
+evlversion = "0.9.6_PRE2"
 env_file = '.env'
 news_url = "https://www.minecraft.net/ru-ru/articles"
 banned_keywords = ["LGBT", "pride", "rainbow", "queer", "gay", "lesbian", "trans"]
